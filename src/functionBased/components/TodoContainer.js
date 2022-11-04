@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react"
+import { v4 as uuidv4 } from "uuid";
+import { Routes, Route } from "react-router-dom"
+
 import TodosList from "./TodosList"
 import Header from "./Header";
+import Navbar from "./Navbar";
 import InputTodo from "./InputTodo";
-import { v4 as uuidv4 } from "uuid";
+import About from "../pages/About"
+import NotMatch from "../pages/NotMatch"
+import SinglePage from "../pages/SinglePage"
 
 const TodoContainer = () => {
     const [todos, setTodos] = useState(getInitialTodos())
@@ -63,38 +69,35 @@ const TodoContainer = () => {
     }, [todos])
 
     return (
-        <div className="container">
-            <div className="inner">
-                <Header />
-                <InputTodo addTodoProps={addTodoItem} />
-                <TodosList
-                    todos={todos}
-                    handleChangeProps={handleChange}
-                    deleteTodoProps={delTodo}
-                    setUpdate={setUpdate}
+        <>
+            <Navbar />
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <div className="container">
+                            <div className="inner">
+                                <Header />
+                                <InputTodo addTodoProps={addTodoItem} />
+                                <TodosList
+                                    todos={todos}
+                                    handleChangeProps={handleChange}
+                                    deleteTodoProps={delTodo}
+                                    setUpdate={setUpdate}
+                                />
+                            </div>
+                        </div>
+                    }
                 />
-            </div>
-        </div>
+
+                <Route path="about/*" element={<About />}>
+                    <Route path=":slug" element={<SinglePage />} />
+                </Route>
+
+                <Route path="*" element={<NotMatch />} />
+            </Routes>
+        </>
     )
 }
-
-//class TodoContainer extends React.Component {
-//    componentDidMount() {
-//        const temp = localStorage.getItem("todos");
-//        const loadedTodos = JSON.parse(temp);
-//        if (loadedTodos) {
-//            this.setState({
-//                todos: loadedTodos
-//            })
-//        }
-//    }
-//
-//    componentDidUpdate(prevProps, prevState) {
-//        if (prevState.todos !== this.state.todos) {
-//            const temp = JSON.stringify(this.state.todos);
-//            localStorage.setItem("todos", temp);
-//        }
-//    }
-//}
 
 export default TodoContainer
