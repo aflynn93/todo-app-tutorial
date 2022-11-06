@@ -1,11 +1,10 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom"
 
-const About = (props) => {
+const About = () => {
     return (
-        <div>
-            <div>Hello from About page</div>
-            <ul>
+        <div className="about__content">
+            <ul className="about__list">
                 <li>
                     <Link to={"about-app"}>About App</Link>
                 </li>
